@@ -1,0 +1,608 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+   <title>SmartSeva — Smart Grievance Portal</title>
+  <link rel="shortcut icon" href="./assets/governance.png" type="image/png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  </head>
+<style>
+      body {
+        /* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
+        line-height: 1.6;
+        color: #333;
+        background-color: #f8fafc;
+      }
+      
+      /* Feature Cards */
+      .feature-card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        overflow: hidden;
+        height: 100%;
+        background: white;
+      }
+      
+      .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+      }
+      
+      .feature-icon {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        font-size: 1.8rem;
+        color: white;
+      }
+      
+      .feature-icon.empower {
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      }
+      
+      .feature-icon.smart {
+        background: linear-gradient(135deg, #0ea5e9, #3b82f6);
+      }
+      
+      .feature-icon.quick {
+        background: linear-gradient(135deg, #10b981, #059669);
+      }
+      
+      .feature-icon.safety {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+      }
+      /* Mission Section */
+      .mission-section {
+        background-color: #f8fafc;
+        padding: 3rem 0;
+        border-radius: 0;
+      }
+      
+      .mission-icon {
+        font-size: 2.5rem;
+        color: var(--smart-teal);
+        margin-bottom: 1.5rem;
+      }
+      
+      /* Benefits Section */
+      .benefits-section {
+        padding: 3rem 0;
+        background: rgba(255,255,255,0.75);
+      }
+      
+      .benefits-img {
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+      
+      </style>
+  <body>
+<!-- SMARTSEVA GLOBAL NAVBAR -->
+<nav class="navbar navbar-expand-md navbar-light bg-white sticky-top shadow-sm">
+  <div class="container-fluid">
+
+    <!-- LEFT: Brand -->
+    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html#home">
+      <img src="./assets/icon.png"
+           width="150" height="50" alt="SmartSeva" style="border-radius:8px;object-fit:cover;">
+    </a>
+
+    <!-- Mobile Toggler -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+            aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- CENTER + RIGHT -->
+    <div class="collapse navbar-collapse" id="mainNav">
+
+      <!-- CENTER: main links -->
+      <ul class="navbar-nav mx-auto mb-2 mb-md-0">
+        <li class="nav-item">
+          <a class="nav-link mx-3" href="index.html#home">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link me-3" href="aboutUs.html">About Us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link me-3" href="./ourai.html">OUR AI</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link me-3" href="dashboard.html">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link me-3" href="contactUs.html">Contact Us</a>
+        </li>
+      </ul>
+
+      <!-- RIGHT: language + auth -->
+      <div class="d-flex align-items-center gap-2 ms-md-0 ms-auto">
+
+        <!-- Language dropdown -->
+        <!-- <div class="dropdown">
+          <button class="btn btn-light border dropdown-toggle py-1 px-2"
+                  id="langDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            Language
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="langDropdown">
+            <li><button class="dropdown-item" type="button">English</button></li>
+            <li><button class="dropdown-item" type="button">हिंदी</button></li>
+            <li><button class="dropdown-item" type="button">తెలుగు</button></li>
+          </ul>
+        </div> -->
+       <!-- AUTH AREA -->
+      <div class="ms-1">
+
+  <div id="navAuthLoggedOut" class="dropdown">
+    <button class="btn btn-outline-primary dropdown-toggle py-1 px-3"
+            type="button" data-bs-toggle="dropdown">
+      Login
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end">
+      <li><a class="dropdown-item" href="login.html">User Login</a></li>
+      <li><hr class="dropdown-divider"></li>
+      <li><a class="dropdown-item" href="adminlogin.html">Admin Login</a></li>
+    </ul>
+  </div>
+
+  <div id="navAuthLoggedIn" class="dropdown d-none">
+    <button class="btn btn-light dropdown-toggle d-flex align-items-center gap-2 py-1 px-2"
+            type="button" data-bs-toggle="dropdown">
+
+      <div id="navUserAvatar"
+           class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center"
+           style="width:32px;height:32px;font-size:.9rem;font-weight:700;">
+        U
+      </div>
+
+      <span id="navUserName" class="small fw-semibold">User</span>
+    </button>
+
+    <ul class="dropdown-menu dropdown-menu-end">
+      <li><a class="dropdown-item" href="profile.html">Profile</a></li>
+      <li><a class="dropdown-item" href="dashboard.html">My Grievances</a></li>
+      <li><hr class="dropdown-divider"></li>
+      <li><button class="dropdown-item text-danger" id="btnNavLogout">Logout</button></li>
+    </ul>
+  </div>
+
+</div>
+
+      </div>
+    </div>
+  </div>
+</nav>
+<!-- About Us -->
+<section class="container aboutussection py-5">
+      <div class="row align-items-center">
+        <div class="col-lg-6 mb-5 mb-lg-0">
+          <img src="./assets/aboutUs.jpeg" alt="Citizen Engagement" class="img-fluid rounded shadow">
+        </div>
+        <div class="col-lg-6">
+          <h2 class="section-title heading fw-bold">About SmartSeva</h2>
+          <p class="mb-4">
+            SmartSeva is a modern grievance support platform designed to simplify the way citizens report civic issues. From potholes and road damage to waste management and child safety concerns, the system allows users to share problems through a quick photo upload and brief description.
+          </p>
+          <p class="mb-4">
+            The platform uses intelligent analysis to understand the nature of the grievance and guide it to the right department for timely action. Citizens receive clarity and transparency throughout the process, with the ability to follow the status of their issue at every stage.
+          </p>
+          <p>
+           At its core, SmartSeva strives to improve public services by enabling faster communication, encouraging accountability, and empowering communities to participate in building a cleaner and safer environment.</p>
+        </div>
+      </div>
+    </section>
+
+
+<!-- GOVERNANCE ASSURANCE / SERVICE CHARTER SECTION -->
+<section id="gov-assurance" class="gov-section py-5">
+  <div class="container-lg px-3">
+
+    <!-- Heading -->
+    <div class="text-center mb-4">
+      <span class="gov-pill text-uppercase">Citizen Service Charter</span>
+      <h2 class="h2 fw-extrabold heading brand-text mt-2">How SmartSeva Works With Government</h2>
+      <p class="text-body-secondary mb-0">
+        A transparent framework that defines response timelines, 
+        escalation path, and citizen responsibilities.
+      </p>
+    </div>
+
+    <!-- Main 3-column layout -->
+    <div class="row g-4 gov-grid">
+      
+      <!-- Column 1: Service timelines -->
+      <div class="col-12 col-lg-4">
+        <div class="gov-card h-100">
+          <div class="gov-card-header">
+            <span class="gov-label-small">Service Levels</span>
+            <h3 class="gov-card-title">Indicative Resolution Timelines</h3>
+          </div>
+
+          <div class="gov-sla-list">
+            <div class="gov-sla-row">
+              <div>
+                <div class="gov-sla-name">Garbage / Sanitation</div>
+                <div class="gov-sla-desc">Overflowing bins, uncleared waste, public health risk</div>
+              </div>
+              <span class="gov-sla-badge">24–48 hrs</span>
+            </div>
+
+            <div class="gov-sla-row">
+              <div>
+                <div class="gov-sla-name">Roads & Potholes</div>
+                <div class="gov-sla-desc">Potholes, damaged manholes, unsafe stretches</div>
+              </div>
+              <span class="gov-sla-badge">3–7 days</span>
+            </div>
+
+            <div class="gov-sla-row">
+              <div>
+                <div class="gov-sla-name">Child Labour / Safety</div>
+                <div class="gov-sla-desc">Children at work, abuse, unsafe conditions</div>
+              </div>
+              <span class="gov-sla-badge gov-sla-high">Immediate</span>
+            </div>
+          </div>
+
+          <p class="gov-footnote small mb-0">
+            <i class="bi bi-info-circle me-1"></i>
+            Actual timelines may vary by department and field conditions.  
+            High-risk cases are auto-flagged for urgent attention.
+          </p>
+        </div>
+      </div>
+
+      <!-- Column 2: Escalation ladder -->
+      <div class="col-12 col-lg-4">
+        <div class="gov-card h-100">
+          <div class="gov-card-header">
+            <span class="gov-label-small">Grievance Path</span>
+            <h3 class="gov-card-title">Escalation Ladder</h3>
+          </div>
+
+          <div class="gov-ladder">
+            <div class="gov-ladder-step">
+              <div class="gov-step-icon">
+                <span>1</span>
+              </div>
+              <div class="gov-step-body">
+                <div class="gov-step-title">Field / Ward Officer</div>
+                <div class="gov-step-text">
+                  First responder for verification and local action. Most routine grievance 
+                  are resolved at this level.
+                </div>
+              </div>
+            </div>
+
+            <div class="gov-ladder-step">
+              <div class="gov-step-icon">
+                <span>2</span>
+              </div>
+              <div class="gov-step-body">
+                <div class="gov-step-title">Zonal / Circle Officer</div>
+                <div class="gov-step-text">
+                  Handles escalated or repeated issues, coordinates with multiple departments 
+                  if required.
+                </div>
+              </div>
+            </div>
+
+            <div class="gov-ladder-step">
+              <div class="gov-step-icon">
+                <span>3</span>
+              </div>
+              <div class="gov-step-body">
+                <div class="gov-step-title">Grievance Cell</div>
+                <div class="gov-step-text">
+                  Reviews SLA breaches, citizen feedback and unresolved grievance, and 
+                  may initiate disciplinary action.
+                </div>
+              </div>
+            </div>
+
+            <div class="gov-ladder-step">
+              <div class="gov-step-icon">
+                <span><i class="bi bi-arrow-up-right"></i></span>
+              </div>
+              <div class="gov-step-body">
+                <div class="gov-step-title">Track Your Grievance in Dashboard</div>
+                <div class="gov-step-text">
+                  You can monitor the current status, assigned department and updates for every grievance from your personal Dashboard. Login to view real-time progress and history.
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Column 3: Citizen responsibilities / rights -->
+      <div class="col-12 col-lg-4">
+        <div class="gov-card h-100">
+          <div class="gov-card-header">
+            <span class="gov-label-small">Citizen Charter</span>
+            <h3 class="gov-card-title">Your Rights & Responsibilities</h3>
+          </div>
+
+          <div class="gov-tag-block">
+            <div class="gov-tag-title">You can expect</div>
+            <ul class="gov-tag-list">
+              <li><span class="gov-chip gov-chip-right">Unique token for every grievance</span></li>
+              <li><span class="gov-chip gov-chip-right">Transparent status updates</span></li>
+              <li><span class="gov-chip gov-chip-right">Time-bound responses</span></li>
+              <li><span class="gov-chip gov-chip-right">Respectful communication</span></li>
+            </ul>
+          </div>
+
+          <hr class="my-3">
+
+          <div class="gov-tag-block">
+            <div class="gov-tag-title">You are requested to</div>
+            <ul class="gov-tag-list">
+              <li><span class="gov-chip">Provide accurate location & details</span></li>
+              <li><span class="gov-chip">Avoid duplicate or false grievance</span></li>
+              <li><span class="gov-chip">Use decent and non-abusive language</span></li>
+              <li><span class="gov-chip">Share feedback after resolution</span></li>
+            </ul>
+          </div>
+
+          <p class="gov-footnote small mb-0">
+            Together, citizens and administration build a responsive and accountable city.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Vision & Mission -->
+ <section id="our-mission" class="mission-section">
+      <div class="container">
+        <h2 class="section-title text-center heading">Our Vision & Mission</h2>
+        <p class="text-center mb-5 lead">
+          Our vision is to create a smart, transparent, and citizen-friendly grievance reporting system 
+          that empowers people to raise issues easily, ensures timely public service response, and promotes 
+          cleaner, safer, and more accountable communities.
+        </p>
+
+        <div class="row g-4">
+          <div class="col-md-6 col-lg-3">
+            <div class="feature-card p-4 text-center">
+              <div class="feature-icon empower">
+                <i class="bi bi-people-fill"></i>
+              </div>
+              <h4 class="fw-bold mb-3">Empower Citizens</h4>
+              <p class="text-muted">Make reporting public issues easy and accessible for everyone, regardless of technical expertise.</p>
+            </div>
+          </div>
+          
+          <div class="col-md-6 col-lg-3">
+            <div class="feature-card p-4 text-center">
+              <div class="feature-icon smart">
+                <i class="bi bi-cpu-fill"></i>
+              </div>
+              <h4 class="fw-bold mb-3">Smart Prioritization</h4>
+              <p class="text-muted">Automatically prioritize your grievance using AI to ensure urgent issues get immediate attention.</p>
+            </div>
+          </div>
+          
+          <div class="col-md-6 col-lg-3">
+            <div class="feature-card p-4 text-center">
+              <div class="feature-icon quick">
+                <i class="bi bi-lightning-charge-fill"></i>
+              </div>
+              <h4 class="fw-bold mb-3">Quick Department Routing</h4>
+              <p class="text-muted">Forward high and moderate grievance to the right department quickly for faster resolution.</p>
+            </div>
+          </div>
+          
+          <div class="col-md-6 col-lg-3">
+            <div class="feature-card p-4 text-center">
+              <div class="feature-icon safety">
+                <i class="bi bi-shield-check"></i>
+              </div>
+              <h4 class="fw-bold mb-3">Ensure Safety & Cleanliness</h4>
+              <p class="text-muted">Address road issues, child labour cases, and waste management problems effectively.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+<!-- Benefits Section -->
+<section class="benefits-section">
+      <div class="container">
+        <h2 class="section-title text-center heading">Benefits to People</h2>
+        <div class="row align-items-center">
+          <div class="col-lg-6 mb-5 mb-lg-0">
+            <img src="./assets/Benifits.png" class="img-fluid benefits-img" alt="Benefits of SmartSeva">
+          </div>
+          <div class="col-lg-6">
+            <div class="row g-4 mt-1">
+              <div class="col-md-6">
+                <div class="d-flex mb-4">
+                  <div class="me-3">
+                    <i class="bi bi-check-circle-fill text-success" style="font-size: 1.5rem;"></i>
+                  </div>
+                  <div>
+                    <h5 class="fw-bold">Easy Reporting</h5>
+                    <p class="text-muted mb-0">Simple interface for quick issue reporting with image upload.</p>
+                  </div>
+                </div>
+                
+                <div class="d-flex mb-4">
+                  <div class="me-3">
+                    <i class="bi bi-check-circle-fill text-success" style="font-size: 1.5rem;"></i>
+                  </div>
+                  <div>
+                    <h5 class="fw-bold">Transparent Tracking</h5>
+                    <p class="text-muted mb-0">Real-time updates on grievance status and resolution progress.</p>
+                  </div>
+                </div>
+                
+                <div class="d-flex mb-4">
+                  <div class="me-3">
+                    <i class="bi bi-check-circle-fill text-success" style="font-size: 1.5rem;"></i>
+                  </div>
+                  <div>
+                    <h5 class="fw-bold">AI-Powered Prioritization</h5>
+                    <p class="text-muted mb-0">Smart categorization ensures urgent issues get immediate attention.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-md-6">
+                <div class="d-flex mb-4">
+                  <div class="me-3">
+                    <i class="bi bi-check-circle-fill text-success" style="font-size: 1.5rem;"></i>
+                  </div>
+                  <div>
+                    <h5 class="fw-bold">Quick Resolution</h5>
+                    <p class="text-muted mb-0">Direct routing to relevant departments speeds up resolution.</p>
+                  </div>
+                </div>
+                
+                <div class="d-flex mb-4">
+                  <div class="me-3">
+                    <i class="bi bi-check-circle-fill text-success" style="font-size: 1.5rem;"></i>
+                  </div>
+                  <div>
+                    <h5 class="fw-bold">Community Impact</h5>
+                    <p class="text-muted mb-0">Collective reporting leads to safer, cleaner neighborhoods.</p>
+                  </div>
+                </div>
+                
+                <div class="d-flex mb-4">
+                  <div class="me-3">
+                    <i class="bi bi-check-circle-fill text-success" style="font-size: 1.5rem;"></i>
+                  </div>
+                  <div>
+                    <h5 class="fw-bold">Accountability</h5>
+                    <p class="text-muted mb-0">Trackable process ensures departments are accountable.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+<!-- FOOTER -->
+<footer id="contact" class="smart-footer mt-auto">
+  <div class="container-lg  py-5">
+
+    <div class="row g-4 align-items-start">
+
+      <!-- Brand + tagline -->
+      <div class="col-md-4">
+        <div class="d-flex align-items-center gap-0 mb-3">
+          <div class=" d-flex align-items-center justify-content-center"></div>
+          <div>
+            <div class="fw-bold smart-footer-title">SmartSeva</div>
+            <div class="small text-muted">Citizen–first grievance platform</div>
+          </div>
+        </div>
+        <p class="small text-muted mb-3">
+          Close the loop between citizens and departments with<br> transparent, time-bound grievance resolution.
+        </p>
+
+        <!-- Mini "status" pills -->
+        <div class="d-flex flex-wrap gap-2">
+          <span class="badge smart-footer-pill">
+            <i class="bi bi-lightning-charge-fill me-1"></i> Real-time Tracking
+          </span>
+          <span class="badge smart-footer-pill">
+            <i class="bi bi-shield-check me-1"></i> Verified Grievance
+          </span>
+        </div>
+      </div>
+
+      <!-- Quick Nav -->
+      <div class="col-6 col-md-2">
+        <h6 class="smart-footer-heading mb-3">Navigate</h6>
+        <ul class="list-unstyled m-0 smart-footer-links">
+          <li><a href="./index.html">Home</a></li>
+          <li><a href="./aboutUs.html">About Us</a></li>
+          <li><a href="./ourai.html">OUR AI</a></li>
+          <li><a href="./dashboard.html">Dashboard</a></li>
+          <li><a href="./contactUs.html">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Support -->
+      <div class="col-6 col-md-3">
+        <h6 class="smart-footer-heading mb-3">Support</h6>
+        <ul class="list-unstyled m-0 smart-footer-links">
+          <li><a href="#">Help & FAQs</a></li>
+          <!-- <li><a href="#">How SmartSeva Works</a></li> -->
+          <li><a href="#">Citizen Charter</a></li>
+          <!-- <li><a href="#">Data & Privacy</a></li> -->
+        </ul>
+
+        <div class="mt-3 small text-muted">
+          Email: <a href="mailto:smartsevaforpeople@gmail.com" class="smart-footer-inline-link">smartsevaforpeople@gmail.com</a><br>
+          Helpline: 1800-000-000
+        </div>
+      </div>
+
+      <!-- Newsletter + social -->
+      <div class="col-md-3">
+        <h6 class="smart-footer-heading mb-3">Stay in the loop</h6>
+        <p class="small text-muted mb-2">
+          Get updates on new features, dashboards and citizen tools.
+        </p>
+
+        <form class="smart-footer-form mb-3">
+          <div class="input-group">
+            <input type="email" class="form-control smart-footer-input"
+                   placeholder="Enter your email" aria-label="Email">
+            <button class="btn smart-footer-btn" type="button">
+              <i class="bi bi-send-fill"></i>
+            </button>
+          </div>
+        </form>
+
+        <div class="d-flex align-items-center gap-2 small text-muted mb-2">
+          <span>Follow:</span>
+          <div class="d-flex gap-2">
+            <a href="#" class="smart-footer-icon"><i class="bi bi-linkedin"></i></a>
+            <a href="#" class="smart-footer-icon"><i class="bi bi-twitter-x"></i></a>
+            <a href="#" class="smart-footer-icon"><i class="bi bi-instagram"></i></a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom strip -->
+    <div class="smart-footer-bottom mt-4 pt-3 d-flex flex-column flex-md-col justify-content-center align-items-center gap-2">
+      <div class="small text-muted">
+        © 2025 SmartSeva. All rights reserved.
+      </div>
+      <div class="d-flex gap-3 small smart-footer-links m-0">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Use</a>
+        <a href="#">Accessibility</a>
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script src="app.js"></script>
+
+  </body>
+</html>

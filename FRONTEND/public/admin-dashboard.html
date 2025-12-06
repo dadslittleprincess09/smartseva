@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>SmartSeva — Smart Grievance Portal</title>
+  <link rel="shortcut icon" href="./assets/governance.png" type="image/png">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Your main theme -->
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    /* extra admin-specific polish (uses your theme vars) */
+    :root{
+      --primary:   #ff671f;
+      --secondary: #046a38;
+      --accent:    #013369;
+      --bg:        #f3f4f6;
+      --text:      #1f2937;
+      --border:    #d1d5db;
+    }
+
+    body{
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: #f3f4f6;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+
+    .admin-shell{
+      flex:1;
+      padding: 1.5rem 1rem 2.5rem;
+    }
+
+    .admin-header{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+      gap:1rem;
+      margin-bottom:1rem;
+    }
+
+    .admin-title{
+      font-weight:800;
+      color:var(--accent);
+    }
+
+    .admin-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:.35rem;
+      padding:.25rem .7rem;
+      border-radius:999px;
+      background:rgba(1,51,105,0.06);
+      font-size:.8rem;
+      color:var(--accent);
+    }
+
+    .summary-card{
+      border-radius:16px;
+      border:1px solid var(--border);
+      background:#fff;
+      padding:1rem 1.1rem;
+      box-shadow:0 6px 18px rgba(15,23,42,0.06);
+    }
+    .summary-label{ font-size:.82rem; color:#6b7280; }
+    .summary-value{ font-size:1.4rem; font-weight:800; color:var(--accent); }
+
+    .status-pill{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:.15rem .5rem;
+      border-radius:999px;
+      font-size:.78rem;
+      font-weight:600;
+      text-transform:capitalize;
+    }
+    .status-pending{ background:rgba(234,179,8,0.12); color:#854d0e; }
+    .status-approved{ background:rgba(22,163,74,0.12); color:#166534; }
+    .status-rejected{ background:rgba(248,113,113,0.14); color:#991b1b; }
+    .status-sent{ background:rgba(37,99,235,0.12); color:#1d4ed8; }
+
+    .table thead th{
+      font-size:.8rem;
+      text-transform:uppercase;
+      letter-spacing:.05em;
+      background:#f9fafb;
+    }
+
+    .table tbody td{
+      vertical-align:middle;
+      font-size:.88rem;
+    }
+
+    .btn-action{
+      border-radius:999px;
+      padding:.22rem .6rem;
+      font-size:.78rem;
+      font-weight:600;
+    }
+
+    .filter-bar{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.75rem;
+      align-items:center;
+      justify-content:space-between;
+      margin:1rem 0 .6rem;
+    }
+    
+  </style>
+</head>
+<div id="scrollBar" style="height:4px; background:orange; width:0%; position:fixed; top:0; left:0; z-index:99999;"></div>
+
+<body>
+
+<!-- SMARTSEVA GLOBAL NAVBAR -->
+<nav class="navbar navbar-expand-md navbar-light bg-white sticky-top shadow-sm">
+  <div class="container-fluid">
+
+    <!-- LEFT: Brand -->
+    <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+      <!-- <img src="./assets/logo.png" width="36" height="36" alt="SmartSeva" style="border-radius:8px;object-fit:cover;"> -->
+      <img src="./assets/icon.png" width="150" height="50" alt="SmartSeva" style="border-radius:8px;object-fit:cover;">
+      <!-- <span class="brand-text fw-bold">SmartSeva</span> -->
+    </a>
+
+    <!-- RIGHT: Admin Auth -->
+    <div class="d-flex align-items-center gap-2 ms-auto">
+      <div id="navAdminLoggedIn" class="dropdown d-none">
+        <button class="btn btn-light dropdown-toggle d-flex align-items-center gap-2 py-1 px-2" type="button" data-bs-toggle="dropdown">
+          <div id="navAdminAvatar" class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center"
+               style="width:32px;height:32px;font-size:.9rem;font-weight:700;">A</div>
+          <span id="navAdminName" class="small fw-semibold">Admin</span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><button class="dropdown-item text-danger" id="btnAdminLogout" type="button">Logout</button></li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+  <!-- MAIN ADMIN CONTENT -->
+  <main class="admin-shell container-lg">
+
+    <div class="admin-header">
+      <div>
+        <div class="admin-badge">
+          <i class="bi bi-shield-lock-fill"></i>
+          <span>Government Officer Console</span>
+        </div>
+        <h1 class="admin-title h3 mb-0">Admin Dashboard</h1>
+        <p class="small text-muted mb-0">
+          Review citizen Grievances, resolve valid ones and forward them to the concerned departments.
+        </p>
+      </div>
+
+      <div class="text-end small text-muted">
+        <div id="adminGeidLabel" class="text-muted"></div>
+      </div>
+    </div>
+
+    <!-- Stat summary -->
+    <div class="row g-3 mb-3">
+     
+      <div class="col-6 col-md-3">
+        <div class="summary-card">
+          <div class="summary-label text-success">Resolved</div>
+          <div id="statApproved" class="summary-value">0</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="summary-card">
+          <div class="summary-label">Sent to department</div>
+          <div id="statSent" class="summary-value">0</div>
+        </div>
+      </div>
+      
+    </div>
+
+    <!-- Filter bar -->
+    <div class="filter-bar">
+      <div class="d-flex align-items-center gap-2">
+        <label for="statusFilter" class="small text-muted">Filter by status:</label>
+        <select id="statusFilter" class="form-select form-select-sm" style="max-width:180px;">
+          <option value="all" selected>All</option>
+          <option value="SEND TO DEPT">Send to Dept.</option>
+          <option value="RESOLVED">Resolved</option>
+        </select>
+      </div>
+      <div class="small text-muted">
+        Last sync: <span id="lastSyncLabel">–</span>
+      </div>
+    </div>
+
+    <!-- Complaints table -->
+    <div class="table-responsive shadow-sm bg-white rounded-3">
+      <table class="table mb-0">
+        <thead>
+          <tr>
+            <th scope="col">Token</th>
+            <th scope="col">Citizen</th>
+            <th scope="col">Category</th>
+            <th scope="col">Location</th>
+            <th scope="col">Image</th> <!-- new column -->
+            <th scope="col">Severity</th>
+            <th scope="col">Raised</th>
+            <th scope="col">Status</th>   
+             
+          </tr>
+        </thead>
+        <tbody id="complaintsBody">
+          <!-- rows rendered via JS -->
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+
+
+  <!-- FOOTER -->
+<footer id="contact" class="smart-footer mt-auto">
+  <div class="container-lg  py-5">
+
+    <div class="row g-4 align-items-start">
+
+      <!-- Brand + tagline -->
+      <div class="col-md-4">
+        <div class="d-flex align-items-center gap-0 mb-3">
+          <div class=" d-flex align-items-center justify-content-center"></div>
+          <div>
+            <div class="fw-bold smart-footer-title">SmartSeva</div>
+            <div class="small text-muted">Citizen–first grievance platform</div>
+          </div>
+        </div>
+        <p class="small text-muted mb-3">
+          Close the loop between citizens and departments with<br> transparent, time-bound grievance resolution.
+        </p>
+
+        <!-- Mini "status" pills -->
+        <div class="d-flex flex-wrap gap-2">
+          <span class="badge smart-footer-pill">
+            <i class="bi bi-lightning-charge-fill me-1"></i> Real-time Tracking
+          </span>
+          <span class="badge smart-footer-pill">
+            <i class="bi bi-shield-check me-1"></i> Verified Complaints
+          </span>
+        </div>
+      </div>
+
+      <!-- Quick Nav -->
+      <div class="col-6 col-md-2">
+        <h6 class="smart-footer-heading mb-3">Navigate</h6>
+        <ul class="list-unstyled m-0 smart-footer-links">
+          <li><a href="index.html#home">Home</a></li>
+          <li><a href="index.html#about">About Us</a></li>
+          <li><a href="index.html#raise">OUR AI</a></li>
+          <li><a href="dashboard.html">Dashboard</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Support -->
+      <div class="col-6 col-md-3">
+        <h6 class="smart-footer-heading mb-3">Support</h6>
+        <ul class="list-unstyled m-0 smart-footer-links">
+          <li><a href="#">Help & FAQs</a></li>
+          <!-- <li><a href="#">How SmartSeva Works</a></li> -->
+          <li><a href="#">Citizen Charter</a></li>
+          <!-- <li><a href="#">Data & Privacy</a></li> -->
+        </ul>
+
+        <div class="mt-3 small text-muted">
+          Email: <a href="mailto:smartsevaforpeople@gmail.com" class="smart-footer-inline-link">smartsevaforpeople@gmail.com</a><br>
+          Helpline: 1800-000-000
+        </div>
+      </div>
+
+      <!-- Newsletter + social -->
+      <div class="col-md-3">
+        <h6 class="smart-footer-heading mb-3">Stay in the loop</h6>
+        <p class="small text-muted mb-2">
+          Get updates on new features, dashboards and citizen tools.
+        </p>
+
+        <form class="smart-footer-form mb-3">
+          <div class="input-group">
+            <input type="email" class="form-control smart-footer-input"
+                   placeholder="Enter your email" aria-label="Email">
+            <button class="btn smart-footer-btn" type="button">
+              <i class="bi bi-send-fill"></i>
+            </button>
+          </div>
+        </form>
+
+        <div class="d-flex align-items-center gap-2 small text-muted mb-2">
+          <span>Follow:</span>
+          <div class="d-flex gap-2">
+            <a href="#" class="smart-footer-icon"><i class="bi bi-linkedin"></i></a>
+            <a href="#" class="smart-footer-icon"><i class="bi bi-twitter-x"></i></a>
+            <a href="#" class="smart-footer-icon"><i class="bi bi-instagram"></i></a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom strip -->
+    <div class="smart-footer-bottom mt-4 pt-3 d-flex flex-column flex-md-col justify-content-center align-items-center gap-2">
+      <div class="small text-muted">
+        © 2025 SmartSeva. All rights reserved.
+      </div>
+      <div class="d-flex gap-3 small smart-footer-links m-0">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Use</a>
+        <a href="#">Accessibility</a>
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="admin-dashboard.js"></script>
+  <!-- <script src="app.js"></script>  -->
+</body>
+</html>
